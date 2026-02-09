@@ -98,3 +98,38 @@ class Register(BaseModel):
 def register(user: Register):
     return {"msg": "User registered", "user": user.username}
 
+# Nested Pydantic Model
+class Category(BaseModel):
+    name:str = Field(
+        title= "category name",
+        description="the cshvb",
+        max_length=50,
+        min_length=1
+    )
+    description:str | None = Field(
+        default=None,
+        title="vdvsv",
+        description="vedvsvs",
+        max_length=200
+    )
+class Product(BaseModel):
+    name: str = Field(
+        title ="Product Name",
+        description="ffff",
+        max_length=100,
+        min_length=3,
+        pattern="^[$#@$@]"
+
+    )
+    price: float
+    stock: int | None  = None
+
+category:Category | None = Field(
+default=None,
+title="product category",
+description="the category to which the product belong"
+)
+
+@app.post("/product")
+async def create_product(product:Product):
+    return product
