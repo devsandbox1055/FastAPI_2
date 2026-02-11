@@ -1,5 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI , Body
 from pydantic import BaseModel
+from typing import Annotated
 
 app  = FastAPI()
 
@@ -16,3 +17,26 @@ class Seller(BaseModel):
 @app.post("/product")
 async def create_product(product: Product,seller:Seller):
     return{"product": product, "seller":seller}
+
+#make body optional
+
+@app.post("/product")
+async def create_product(product: Product,seller:Seller | None  = None):
+    return{"product": product, "seller":seller}
+
+
+# Singular value in body
+
+@app.post("/product")
+async def create_product(product: Product,seller:Seller, sex_key: Annotated[str,Body()]):
+    return{"product": product, "seller":seller, "sec_key"}
+
+# without embeded singular body parameter
+@app.post("/product")
+async def create_product(product: Product):
+    return product
+
+#with embeded
+@app.post("/product")
+async def create_product(product: Annotated[Product,Body(embed=True)]):
+    return product
